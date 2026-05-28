@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safety System Dashboard</title>
+  <link rel="stylesheet" href="static/css/style.css" />
+</head>
+<body>
+  <!-- Login screen -->
+  <div id="login-screen" class="screen">
+    <div class="login-card">
+      <h1>Safety Dashboard</h1>
+      <p class="subtitle">Smart Fire &amp; Intruder Safety System</p>
+      <form id="login-form">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="admin@devdungeons.com" required />
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Password" required />
+        <button type="submit">Sign In</button>
+        <p id="login-error" class="error hidden"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard screen -->
+  <div id="dashboard-screen" class="screen hidden">
+    <header>
+      <h1>Safety Dashboard</h1>
+      <div class="header-right">
+        <span id="user-email"></span>
+        <button id="logout-btn" class="btn-outline">Sign Out</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Device selector -->
+      <section class="card" id="device-selector-card">
+        <h2>Device</h2>
+        <select id="device-select">
+          <option value="">Loading devices…</option>
+        </select>
+        <span id="connectivity-badge" class="badge badge-offline">Offline</span>
+      </section>
+
+      <!-- Threat level banner -->
+      <section id="threat-banner" class="threat-banner threat-safe">
+        <div class="threat-icon" id="threat-icon">✓</div>
+        <div>
+          <div class="threat-label" id="threat-label">Safe</div>
+          <div class="threat-score" id="threat-score">Risk: 0.000</div>
+        </div>
+        <div class="arm-controls">
+          <button id="arm-btn" class="btn-arm">Arm</button>
+          <button id="disarm-btn" class="btn-disarm">Disarm</button>
+        </div>
+      </section>
+
+      <!-- Live readings -->
+      <section class="card readings-grid">
+        <h2>Live Readings</h2>
+        <div class="reading-item">
+          <span class="reading-label">Temperature</span>
+          <span class="reading-value" id="r-temp">—</span>
+        </div>
+        <div class="reading-item">
+          <span class="reading-label">Humidity</span>
+          <span class="reading-value" id="r-humidity">—</span>
+        </div>
+        <div class="reading-item">
+          <span class="reading-label">Light Level</span>
+          <span class="reading-value" id="r-light">—</span>
+        </div>
+        <div class="reading-item">
+          <span class="reading-label">Flame</span>
+          <span class="reading-value" id="r-flame">—</span>
+        </div>
+        <div class="reading-item">
+          <span class="reading-label">Motion</span>
+          <span class="reading-value" id="r-motion">—</span>
+        </div>
+        <div class="reading-item">
+          <span class="reading-label">Armed</span>
+          <span class="reading-value" id="r-armed">—</span>
+        </div>
+        <p class="last-updated">Last updated: <span id="last-updated">—</span></p>
+      </section>
+
+      <!-- Thresholds -->
+      <section class="card" id="thresholds-card">
+        <h2>Thresholds <button class="btn-small" id="thresholds-edit-btn">Edit</button></h2>
+        <div id="thresholds-view">
+          <table class="thresholds-table">
+            <tbody id="thresholds-tbody"></tbody>
+          </table>
+        </div>
+        <form id="thresholds-form" class="hidden">
+          <div class="threshold-field">
+            <label>Light dark threshold</label>
+            <input type="number" name="light_dark_threshold" min="0" max="1023" />
+          </div>
+          <div class="threshold-field">
+            <label>Flame fire score</label>
+            <input type="number" name="flame_fire_score" min="0" max="1" step="0.01" />
+          </div>
+          <div class="threshold-field">
+            <label>High temp (°C)</label>
+            <input type="number" name="temp_high_c" step="0.1" />
+          </div>
+          <div class="threshold-field">
+            <label>Extreme temp (°C)</label>
+            <input type="number" name="temp_extreme_c" step="0.1" />
+          </div>
+          <div class="threshold-field">
+            <label>Low humidity (%)</label>
+            <input type="number" name="humidity_low_pct" min="0" max="100" step="0.1" />
+          </div>
+          <div class="threshold-field">
+            <label>Fire confirm score</label>
+            <input type="number" name="fire_confirm_score" min="0" max="1" step="0.01" />
+          </div>
+          <div class="threshold-field">
+            <label>Fire alarm score</label>
+            <input type="number" name="fire_alarm_score" min="0" max="1" step="0.01" />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Save</button>
+            <button type="button" id="thresholds-cancel-btn" class="btn-outline">Cancel</button>
+          </div>
+          <p id="thresholds-error" class="error hidden"></p>
+        </form>
+      </section>
+
+      <!-- Event log -->
+      <section class="card" id="events-card">
+        <h2>Event Log</h2>
+        <table class="events-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Type</th>
+              <th>Risk Score</th>
+              <th>Alert Sent</th>
+            </tr>
+          </thead>
+          <tbody id="events-tbody">
+            <tr><td colspan="4" class="empty-row">No events yet</td></tr>
+          </tbody>
+        </table>
+        <button class="btn-small" id="load-more-events">Load more</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="static/js/app.js"></script>
+</body>
+</html>

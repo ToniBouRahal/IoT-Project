@@ -1,0 +1,11 @@
+# This file documents the expected MQTT users.
+# Generate the real passwd file on the server with:
+#
+#   docker run --rm -v "$PWD/mosquitto:/mosquitto" eclipse-mosquitto \
+#     mosquitto_passwd -c /mosquitto/config/passwd backend
+#   docker run --rm -v "$PWD/mosquitto:/mosquitto" eclipse-mosquitto \
+#     mosquitto_passwd /mosquitto/config/passwd raspi3-grovepi-01
+#
+# Users needed:
+#   backend              — used by the backend container (MQTT_USERNAME / MQTT_PASSWORD)
+#   raspi3-grovepi-01    — used by the Raspberry Pi (MQTT_PASSWORD on the Pi)

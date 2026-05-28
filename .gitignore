@@ -1,0 +1,62 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+backend/.env
+deploy/.env
+
+# MQTT credentials and certificates
+deploy/mosquitto/passwd
+deploy/mosquitto/certs/
+*.pem
+*.key
+*.crt
+*.csr
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.venv/
+venv/
+env/
+
+# Node / frontend tooling
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+
+# Docker / local runtime
+*.pid
+*.log
+logs/
+tmp/
+
+# Databases and local data
+*.sqlite
+*.sqlite3
+*.db
+postgres-data/
+mosquitto-data/
+traefik-certs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor and local agent metadata
+.vscode/
+.idea/
+.agents/
+.claude/
+.codex/

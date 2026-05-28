@@ -1,0 +1,24 @@
+device_id: raspi3-grovepi-01
+mock_mode: false  # set true for development without hardware
+
+mqtt:
+  host: mqtt.devdungeons.com
+  port: 8883
+  tls: true
+  username: raspi3-grovepi-01
+  password: ""  # override with env var MQTT_PASSWORD
+  reconnect_delay: 5
+  telemetry_interval: 10  # seconds between telemetry publishes
+  heartbeat_interval: 30  # seconds between heartbeats
+
+thresholds:
+  light_dark_threshold: 50       # below this = dark = auto-arm
+  flame_fire_score: 0.7          # flame detected adds this to fire score
+  temp_high_c: 40.0              # above this adds 0.3 to fire score
+  temp_extreme_c: 60.0           # above this adds 0.5 to fire score (not cumulative)
+  humidity_low_pct: 30.0         # below this adds 0.2 to fire score
+  fire_confirm_score: 0.8        # total score >= this = Fire
+  fire_alarm_score: 0.5          # total score >= this = False Alarm
+
+alerts:
+  offline_timeout: 60  # seconds before backend considers device offline

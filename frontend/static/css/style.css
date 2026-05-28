@@ -1,0 +1,179 @@
+/* ── Reset & base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --border: #2a2d3e;
+  --text: #e2e8f0;
+  --text-muted: #8892a4;
+  --accent: #4f8ef7;
+  --safe: #22c55e;
+  --intruder: #f59e0b;
+  --fire: #ef4444;
+  --false-alarm: #a78bfa;
+  --radius: 12px;
+}
+
+html, body { height: 100%; font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+
+/* ── Utility ──────────────────────────────────────────────── */
+.hidden { display: none !important; }
+.error  { color: #f87171; font-size: .85rem; margin-top: .5rem; }
+
+/* ── Login ────────────────────────────────────────────────── */
+#login-screen {
+  display: flex; align-items: center; justify-content: center; min-height: 100vh;
+}
+.login-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 2.5rem; width: 360px;
+}
+.login-card h1 { font-size: 1.6rem; margin-bottom: .25rem; }
+.login-card .subtitle { color: var(--text-muted); margin-bottom: 1.5rem; font-size: .9rem; }
+.login-card label { display: block; font-size: .8rem; color: var(--text-muted); margin-bottom: .3rem; }
+.login-card input {
+  width: 100%; padding: .6rem .85rem; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+  font-size: .95rem; margin-bottom: 1rem;
+}
+.login-card button[type="submit"] {
+  width: 100%; padding: .7rem; background: var(--accent); color: #fff;
+  border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;
+  transition: opacity .15s;
+}
+.login-card button[type="submit"]:hover { opacity: .88; }
+
+/* ── Dashboard layout ─────────────────────────────────────── */
+#dashboard-screen { display: flex; flex-direction: column; min-height: 100vh; }
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border);
+}
+header h1 { font-size: 1.2rem; }
+.header-right { display: flex; align-items: center; gap: .75rem; }
+#user-email { color: var(--text-muted); font-size: .85rem; }
+
+main {
+  flex: 1; padding: 1.25rem; display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1rem; align-content: start;
+}
+
+/* ── Card ─────────────────────────────────────────────────── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.25rem;
+}
+.card h2 { font-size: 1rem; color: var(--text-muted); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: .05em; }
+
+/* ── Device selector ──────────────────────────────────────── */
+#device-selector-card { display: flex; align-items: center; gap: .75rem; }
+#device-selector-card h2 { margin-bottom: 0; }
+#device-select {
+  flex: 1; padding: .45rem .7rem; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: .9rem;
+}
+
+/* ── Badges ───────────────────────────────────────────────── */
+.badge {
+  display: inline-block; padding: .25rem .65rem; border-radius: 999px;
+  font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em;
+}
+.badge-online  { background: rgba(34,197,94,.15); color: var(--safe); }
+.badge-offline { background: rgba(148,163,184,.1); color: var(--text-muted); }
+
+/* ── Threat banner ────────────────────────────────────────── */
+.threat-banner {
+  grid-column: 1 / -1; display: flex; align-items: center; gap: 1.25rem;
+  border-radius: var(--radius); padding: 1.25rem 1.5rem;
+  border: 1px solid transparent; transition: background .3s, border-color .3s;
+}
+.threat-safe      { background: rgba(34,197,94,.08);  border-color: rgba(34,197,94,.25); }
+.threat-intruder  { background: rgba(245,158,11,.1);  border-color: rgba(245,158,11,.35); }
+.threat-fire      { background: rgba(239,68,68,.1);   border-color: rgba(239,68,68,.35); }
+.threat-false-alarm { background: rgba(167,139,250,.1); border-color: rgba(167,139,250,.35); }
+
+.threat-icon {
+  font-size: 2.2rem; width: 48px; height: 48px; display: flex;
+  align-items: center; justify-content: center; border-radius: 50%;
+  flex-shrink: 0;
+}
+.threat-safe      .threat-icon { background: rgba(34,197,94,.2);  color: var(--safe); }
+.threat-intruder  .threat-icon { background: rgba(245,158,11,.2); color: var(--intruder); }
+.threat-fire      .threat-icon { background: rgba(239,68,68,.2);  color: var(--fire); }
+.threat-false-alarm .threat-icon { background: rgba(167,139,250,.2); color: var(--false-alarm); }
+
+.threat-label { font-size: 1.4rem; font-weight: 700; }
+.threat-score { font-size: .85rem; color: var(--text-muted); margin-top: .15rem; }
+
+.arm-controls { margin-left: auto; display: flex; gap: .5rem; }
+.btn-arm    { padding: .5rem 1.1rem; border: none; border-radius: 8px; cursor: pointer; background: rgba(34,197,94,.2); color: var(--safe); font-weight: 600; }
+.btn-disarm { padding: .5rem 1.1rem; border: none; border-radius: 8px; cursor: pointer; background: rgba(239,68,68,.15); color: var(--fire); font-weight: 600; }
+.btn-arm:hover    { background: rgba(34,197,94,.35); }
+.btn-disarm:hover { background: rgba(239,68,68,.3); }
+
+/* ── Readings grid ────────────────────────────────────────── */
+.readings-grid { grid-column: span 1; }
+.reading-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .55rem 0; border-bottom: 1px solid var(--border);
+}
+.reading-item:last-of-type { border-bottom: none; }
+.reading-label { color: var(--text-muted); font-size: .9rem; }
+.reading-value { font-weight: 600; font-size: .95rem; }
+.last-updated { color: var(--text-muted); font-size: .75rem; margin-top: .75rem; }
+
+/* ── Thresholds ───────────────────────────────────────────── */
+.thresholds-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.thresholds-table td { padding: .45rem .25rem; border-bottom: 1px solid var(--border); }
+.thresholds-table td:last-child { text-align: right; font-weight: 600; }
+
+.threshold-field { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .75rem; }
+.threshold-field label { font-size: .8rem; color: var(--text-muted); }
+.threshold-field input {
+  padding: .5rem .75rem; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); font-size: .9rem;
+}
+.form-actions { display: flex; gap: .5rem; margin-top: .5rem; }
+
+/* ── Events table ─────────────────────────────────────────── */
+#events-card { grid-column: 1 / -1; }
+.events-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.events-table th {
+  text-align: left; padding: .5rem .5rem .75rem; color: var(--text-muted);
+  font-weight: 500; border-bottom: 1px solid var(--border); text-transform: uppercase;
+  font-size: .75rem; letter-spacing: .04em;
+}
+.events-table td { padding: .55rem .5rem; border-bottom: 1px solid var(--border); }
+.events-table tbody tr:hover { background: rgba(255,255,255,.03); }
+.empty-row { text-align: center; color: var(--text-muted); padding: 1.5rem 0; }
+.event-fire        { color: var(--fire); font-weight: 700; }
+.event-intruder    { color: var(--intruder); font-weight: 700; }
+.event-false-alarm { color: var(--false-alarm); }
+.event-safe        { color: var(--safe); }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn-outline {
+  padding: .4rem .9rem; border: 1px solid var(--border); border-radius: 8px;
+  background: transparent; color: var(--text); cursor: pointer; font-size: .85rem;
+}
+.btn-outline:hover { background: var(--border); }
+.btn-primary {
+  padding: .5rem 1.1rem; border: none; border-radius: 8px;
+  background: var(--accent); color: #fff; cursor: pointer; font-weight: 600; font-size: .9rem;
+}
+.btn-primary:hover { opacity: .88; }
+.btn-small {
+  padding: .25rem .6rem; border: 1px solid var(--border); border-radius: 6px;
+  background: transparent; color: var(--text-muted); cursor: pointer; font-size: .75rem;
+  margin-left: .5rem;
+}
+.btn-small:hover { background: var(--border); }
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 600px) {
+  main { grid-template-columns: 1fr; }
+  .threat-banner { flex-wrap: wrap; }
+  .arm-controls { margin-left: 0; width: 100%; justify-content: flex-end; }
+}
