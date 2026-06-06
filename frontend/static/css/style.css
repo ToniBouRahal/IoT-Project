@@ -71,8 +71,9 @@ main {
 #device-selector-card { display: flex; align-items: center; gap: .75rem; }
 #device-selector-card h2 { margin-bottom: 0; }
 #device-select {
-  flex: 1; padding: .45rem .7rem; background: var(--bg);
+  flex: 1; min-width: 0; padding: .45rem .7rem; background: var(--bg);
   border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: .9rem;
+  overflow: hidden; text-overflow: ellipsis;
 }
 
 /* ── Badges ───────────────────────────────────────────────── */
