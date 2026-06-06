@@ -13,12 +13,13 @@ services:
 
   # ── Reverse proxy (HTTPS + routing) ────────────────────────
   reverse-proxy:
-    image: traefik:v3.0
+    image: traefik:v3.6
     container_name: reverse-proxy
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
+      - "8883:8883"
     environment:
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     volumes:
@@ -33,15 +34,19 @@ services:
     image: eclipse-mosquitto:2.0
     container_name: mosquitto
     restart: unless-stopped
-    ports:
-      - "8883:8883"   # MQTT over TLS — exposed for Raspberry Pi
-      # port 1883 is NOT published; backend uses it via internal Docker network
+    # port 1883 is NOT published; Traefik terminates TLS on 8883 and forwards here
     volumes:
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
       - ./mosquitto/acl.conf:/mosquitto/config/acl.conf:ro
-      - ./mosquitto/passwd:/mosquitto/config/passwd:ro
-      - ./mosquitto/certs:/mosquitto/certs:ro
+      - ./mosquitto/config/passwd:/mosquitto/config/passwd:ro
       - mosquitto-data:/mosquitto/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.mqtt.rule=HostSNI(`mqtt.devdungeons.com`)"
+      - "traefik.tcp.routers.mqtt.entrypoints=mqtts"
+      - "traefik.tcp.routers.mqtt.tls=true"
+      - "traefik.tcp.routers.mqtt.tls.certresolver=letsencrypt"
+      - "traefik.tcp.services.mqtt.loadbalancer.server.port=1883"
     networks:
       - safety-net
     healthcheck:

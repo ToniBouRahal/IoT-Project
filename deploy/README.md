@@ -27,19 +27,9 @@ docker run --rm -it -v "$PWD/mosquitto:/mosquitto" eclipse-mosquitto:2.0 \
   mosquitto_passwd /mosquitto/config/passwd raspi3-grovepi-01
 ```
 
-### 2. Create TLS certificates for MQTT (port 8883)
+### 2. TLS for MQTT (port 8883)
 
-Option A — self-signed (development/testing):
-```bash
-mkdir -p deploy/mosquitto/certs
-openssl req -newkey rsa:2048 -nodes -x509 -days 365 \
-  -keyout deploy/mosquitto/certs/server.key \
-  -out deploy/mosquitto/certs/server.crt \
-  -subj "/CN=mqtt.devdungeons.com"
-cp deploy/mosquitto/certs/server.crt deploy/mosquitto/certs/ca.crt
-```
-
-Option B — Let's Encrypt cert (copy from Traefik's `/letsencrypt/acme.json` after first deploy).
+Traefik terminates TLS on port 8883 using the same Let's Encrypt cert it manages via Cloudflare DNS challenge, then forwards plain MQTT to Mosquitto on port 1883 internally. No certificates need to be generated or copied manually — Traefik handles renewal automatically.
 
 ### 3. Configure environment
 
@@ -85,7 +75,7 @@ MQTT_PORT=8883
 MQTT_PASSWORD=<raspi3-grovepi-01 password>
 ```
 
-The Pi uses TLS by default (`tls: true` in `config.yaml`). If using a self-signed cert, copy `ca.crt` to the Pi and point the paho TLS config to it.
+The Pi uses TLS by default (`tls: true` in `config.yaml`). TLS is terminated by Traefik using a valid Let's Encrypt cert, so no custom CA certificate is needed on the Pi.
 
 ## Backup
 
