@@ -16,11 +16,14 @@
 ```bash
 cd deploy
 
-# Create the passwd file
-docker run --rm -v "$PWD/mosquitto:/mosquitto" eclipse-mosquitto:2.0 \
+mkdir -p mosquitto/config
+
+# Create the passwd file and add the backend user (-c = create, -it = interactive password prompt)
+docker run --rm -it -v "$PWD/mosquitto:/mosquitto" eclipse-mosquitto:2.0 \
   mosquitto_passwd -c /mosquitto/config/passwd backend
 
-docker run --rm -v "$PWD/mosquitto:/mosquitto" eclipse-mosquitto:2.0 \
+# Add the Raspberry Pi user (no -c, appends to existing file)
+docker run --rm -it -v "$PWD/mosquitto:/mosquitto" eclipse-mosquitto:2.0 \
   mosquitto_passwd /mosquitto/config/passwd raspi3-grovepi-01
 ```
 
