@@ -67,15 +67,14 @@ docker compose logs -f mqtt
 
 ## Connecting the Raspberry Pi
 
-Set these environment variables on the Pi before starting the edge app:
+`config.yaml` already has the correct host, port, username, and TLS settings. The only value you need to supply is the password:
 
 ```bash
-MQTT_HOST=mqtt.devdungeons.com
-MQTT_PORT=8883
-MQTT_PASSWORD=<raspi3-grovepi-01 password>
+export MQTT_PASSWORD=<raspi3-grovepi-01 password>
+python main.py
 ```
 
-The Pi uses TLS by default (`tls: true` in `config.yaml`). TLS is terminated by Traefik using a valid Let's Encrypt cert, so no custom CA certificate is needed on the Pi.
+TLS is terminated by Traefik using a valid Let's Encrypt cert, so no custom CA certificate is needed on the Pi.
 
 ## Backup
 
