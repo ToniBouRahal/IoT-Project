@@ -18,6 +18,6 @@ class FlameSensor(BaseSensor):
     def read(self) -> dict:
         if not _GROVEPI_AVAILABLE:
             raise RuntimeError("grovepi not available; use MockFlameSensor in mock_mode")
-        # LOW signal = flame detected on most flame sensor modules
+        # HIGH signal = flame detected on this module (active HIGH)
         raw = grovepi.digitalRead(self.port)
-        return {"flame_detected": raw == 0}
+        return {"flame_detected": raw == 1}
