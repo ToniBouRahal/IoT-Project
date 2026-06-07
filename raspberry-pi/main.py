@@ -4,6 +4,7 @@ import logging
 import os
 import signal
 import sys
+import threading
 import time
 from datetime import datetime, timezone
 
@@ -84,12 +85,11 @@ def main():
     mqtt_client = MqttClient(cfg, on_command=on_command)
     mqtt_client.connect()
 
-    running = True
+    stop_event = threading.Event()
 
     def _shutdown(sig, frame):
-        nonlocal running
         logger.info("Shutdown signal received")
-        running = False
+        stop_event.set()
 
     signal.signal(signal.SIGINT, _shutdown)
     signal.signal(signal.SIGTERM, _shutdown)
@@ -99,7 +99,7 @@ def main():
 
     logger.info("Starting sensor loop (interval=%ds, device_id=%s)", interval, cfg["device_id"])
 
-    while running:
+    while not stop_event.is_set():
         loop_start = time.time()
 
         try:
@@ -111,7 +111,7 @@ def main():
             humidity = th["humidity_percent"]
         except Exception as exc:
             logger.error("Sensor read error: %s", exc)
-            time.sleep(interval)
+            stop_event.wait(timeout=interval)
             continue
 
         state.auto_arm(light)
@@ -175,7 +175,7 @@ def main():
 
         elapsed = time.time() - loop_start
         sleep_time = max(0.0, interval - elapsed)
-        time.sleep(sleep_time)
+        stop_event.wait(timeout=sleep_time)
 
     led.stop()
     mqtt_client.disconnect()
