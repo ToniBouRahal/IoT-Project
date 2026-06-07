@@ -1,3 +1,4 @@
-paho-mqtt>=1.6
+paho-mqtt>=1.6,<2.0
 PyYAML>=5.1
+typing_extensions>=3.7
 grovepi>=1.0.6
