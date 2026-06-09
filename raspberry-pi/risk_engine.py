@@ -19,9 +19,6 @@ class Thresholds:
 
 
 class RiskEngine:
-    def __init__(self):
-        self._prev_temp: float | None = None
-
     def classify(
         self,
         light: int,
@@ -34,13 +31,13 @@ class RiskEngine:
     ) -> tuple[str, float]:
         """Classify the current environment into a threat label with a risk score.
 
-        Priority order: fire-family checks first, then Intruder, then Safe.
+        Priority: fire-family checks first, then Intruder, then Safe.
 
         Labels:
-          Fire          — flame + elevated temp or low humidity, and temp not falling
-          Possible Fire — flame detected but no environmental confirmation yet
-          False Alarm   — elevated temp/humidity without flame, OR flame + falling temp
-          Intruder      — motion while armed (only when no fire-family condition is active)
+          Fire          — flame + elevated temp or low humidity confirmed
+          Possible Fire — flame detected but no environmental confirmation
+          False Alarm   — elevated temp or low humidity with no flame
+          Intruder      — motion while armed (only when no fire condition active)
           Safe          — no threat detected
         """
         temp_elevated = temperature_c > thresholds.temp_high_c
@@ -48,29 +45,15 @@ class RiskEngine:
         humidity_low  = humidity_percent < thresholds.humidity_low_pct
         env_confirmed = temp_elevated or humidity_low
 
-        # True only when we have a previous reading and temperature has dropped
-        temp_decreasing = (
-            self._prev_temp is not None and temperature_c < self._prev_temp
-        )
-        self._prev_temp = temperature_c
-
         if flame_detected:
-            if temp_decreasing:
-                # Flame still present but conditions cooling — likely a passing/brief source
-                return ("False Alarm", round(thresholds.flame_fire_score * 0.6, 3))
-
             if env_confirmed:
-                # Flame + heat or dryness confirmed → real fire
                 score = thresholds.flame_fire_score
                 score += 0.2 if temp_extreme else 0.1 if temp_elevated else 0.0
                 score += 0.1 if humidity_low else 0.0
                 return ("Fire", round(min(score, 1.0), 3))
-
-            # Flame alone with no environmental confirmation yet
             return ("Possible Fire", round(thresholds.flame_fire_score, 3))
 
         if env_confirmed:
-            # Elevated temp or low humidity with no flame — environmental warning
             score = 0.3 if temp_extreme else 0.2 if temp_elevated else 0.0
             score += 0.15 if humidity_low else 0.0
             return ("False Alarm", round(score, 3))
