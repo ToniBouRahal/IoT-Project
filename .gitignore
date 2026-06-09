@@ -60,3 +60,11 @@ Thumbs.db
 .agents/
 .claude/
 .codex/
+docs/presentations/build_decks.py
+docs/presentations/demo_presentation.pptx
+.gitignore
+docs/presentations/demo_script.md
+docs/presentations/project_report.docx
+docs/presentations/sales_pitch.pptx
+docs/presentations/sales_pitch_script.md
+docs/presentations/build_report.py

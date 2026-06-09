@@ -84,8 +84,10 @@ async def _handle_event(payload: dict):
 
 async def _handle_heartbeat(payload: dict):
     from datetime import datetime, timezone
-    from sqlalchemy import update
-    from app.models import Device
+    from sqlalchemy import update, select
+    from app.models import Device, Threshold
+    from app.schemas.threshold import ThresholdOut
+    from app.services.commands import publish_threshold_update
 
     device_id = payload.get("device_id")
     if not device_id:
@@ -97,6 +99,15 @@ async def _handle_heartbeat(payload: dict):
             .values(last_seen=datetime.now(timezone.utc))
         )
         await db.commit()
+
+        # Push current saved thresholds back to the device so it stays in sync
+        result = await db.execute(select(Threshold).where(Threshold.device_id == device_id))
+        row = result.scalar_one_or_none()
+        if row:
+            publish_threshold_update(
+                device_id,
+                ThresholdOut.model_validate(row).model_dump(exclude={"device_id"}),
+            )
 
 
 def _mqtt_thread(client: mqtt.Client):

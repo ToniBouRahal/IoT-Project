@@ -42,6 +42,10 @@ class MqttClient:
         t = threading.Thread(target=self._connect_loop, daemon=True)
         t.start()
 
+    def wait_connected(self, timeout: float = 30.0) -> bool:
+        """Block until MQTT is connected or timeout expires. Returns True if connected."""
+        return self._connected.wait(timeout=timeout)
+
     def _connect_loop(self):
         delay = self._cfg["mqtt"].get("reconnect_delay", 5)
         while not self._shutdown.is_set():
