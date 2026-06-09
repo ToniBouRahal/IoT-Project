@@ -105,7 +105,10 @@ class MqttClient:
         if not self._connected.is_set():
             logger.debug("MQTT not connected, skipping publish to %s", topic)
             return
-        self._client.publish(topic, json.dumps(payload), qos=qos)
+        try:
+            self._client.publish(topic, json.dumps(payload), qos=qos)
+        except Exception as exc:
+            logger.warning("Publish to %s failed: %s", topic, exc)
 
     def disconnect(self):
         self._shutdown.set()
