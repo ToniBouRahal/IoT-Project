@@ -116,11 +116,11 @@ async function poll() {
 
 // ── Dashboard update ─────────────────────────────────────────
 const THREAT_META = {
-  'Safe':        { cls: 'threat-safe',        icon: '✓' },
-  'Intruder':    { cls: 'threat-intruder',     icon: '👤' },
-  'Fire':        { cls: 'threat-fire',         icon: '🔥' },
-  'False Alarm': { cls: 'threat-false-alarm',  icon: '⚠' },
-  'Offline':     { cls: 'threat-safe',         icon: '?' },
+  'Safe':        { cls: 'threat-safe',        icon: '✓',  label: 'Safe' },
+  'Intruder':    { cls: 'threat-intruder',     icon: '👤', label: 'Intruder' },
+  'Fire':        { cls: 'threat-fire',         icon: '🔥', label: 'Fire' },
+  'False Alarm': { cls: 'threat-false-alarm',  icon: '⚠',  label: 'Possible Fire' },
+  'Offline':     { cls: 'threat-safe',         icon: '?',  label: 'Offline' },
 };
 
 function updateDashboard(device) {
@@ -132,7 +132,7 @@ function updateDashboard(device) {
   Object.values(THREAT_META).forEach(m => banner.classList.remove(m.cls));
   banner.classList.add(meta.cls);
   $('threat-icon').textContent = meta.icon;
-  $('threat-label').textContent = threat;
+  $('threat-label').textContent = meta.label;
   $('threat-score').textContent = `Risk: ${(device.risk_score || 0).toFixed(3)}`;
 
   // Connectivity
@@ -272,7 +272,7 @@ async function loadEvents(reset = false) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${new Date(ev.created_at).toLocaleString()}</td>
-      <td class="${cls}">${ev.event_type}</td>
+      <td class="${cls}">${ev.event_type === 'False Alarm' ? 'Possible Fire' : ev.event_type}</td>
       <td>${ev.risk_score.toFixed(3)}</td>
       <td>${ev.alert_sent ? '✓' : '—'}</td>
     `;
