@@ -85,15 +85,6 @@ def main():
     mqtt_client = MqttClient(cfg, on_command=on_command)
     mqtt_client.connect()
 
-    # Send a heartbeat immediately after connecting so the backend pushes back
-    # the latest saved thresholds before the first sensor cycle runs.
-    if mqtt_client.wait_connected(timeout=30):
-        mqtt_client.publish_heartbeat()
-        last_heartbeat = time.time()
-    else:
-        logger.warning("MQTT did not connect within 30s — starting with default thresholds")
-        last_heartbeat = 0.0
-
     stop_event = threading.Event()
 
     def _shutdown(sig, frame):
