@@ -116,11 +116,12 @@ async function poll() {
 
 // ── Dashboard update ─────────────────────────────────────────
 const THREAT_META = {
-  'Safe':        { cls: 'threat-safe',        icon: '✓',  label: 'Safe' },
-  'Intruder':    { cls: 'threat-intruder',     icon: '👤', label: 'Intruder' },
-  'Fire':        { cls: 'threat-fire',         icon: '🔥', label: 'Fire' },
-  'False Alarm': { cls: 'threat-false-alarm',  icon: '⚠',  label: 'Possible Fire' },
-  'Offline':     { cls: 'threat-safe',         icon: '?',  label: 'Offline' },
+  'Safe':          { cls: 'threat-safe',          icon: '✓',  label: 'Safe' },
+  'Intruder':      { cls: 'threat-intruder',       icon: '👤', label: 'Intruder' },
+  'Fire':          { cls: 'threat-fire',           icon: '🔥', label: 'Fire' },
+  'Possible Fire': { cls: 'threat-possible-fire',  icon: '🔶', label: 'Possible Fire' },
+  'False Alarm':   { cls: 'threat-false-alarm',    icon: '🌡', label: 'False Alarm' },
+  'Offline':       { cls: 'threat-safe',           icon: '?',  label: 'Offline' },
 };
 
 function updateDashboard(device) {
@@ -264,15 +265,16 @@ async function loadEvents(reset = false) {
 
   data.forEach(ev => {
     const cls = {
-      'Fire': 'event-fire',
-      'Intruder': 'event-intruder',
-      'False Alarm': 'event-false-alarm',
-      'Safe': 'event-safe',
+      'Fire':          'event-fire',
+      'Intruder':      'event-intruder',
+      'Possible Fire': 'event-possible-fire',
+      'False Alarm':   'event-false-alarm',
+      'Safe':          'event-safe',
     }[ev.event_type] || '';
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${new Date(ev.created_at).toLocaleString()}</td>
-      <td class="${cls}">${ev.event_type === 'False Alarm' ? 'Possible Fire' : ev.event_type}</td>
+      <td class="${cls}">${ev.event_type}</td>
       <td>${ev.risk_score.toFixed(3)}</td>
       <td>${ev.alert_sent ? '✓' : '—'}</td>
     `;

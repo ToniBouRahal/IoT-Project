@@ -122,10 +122,11 @@ def main():
 
         # Map threat to LED pattern
         pattern_map = {
-            "Safe": "safe",
-            "Intruder": "intruder",
-            "Fire": "fire",
-            "False Alarm": "false_alarm",
+            "Safe":          "safe",
+            "Intruder":      "intruder",
+            "Fire":          "fire",
+            "Possible Fire": "possible_fire",
+            "False Alarm":   "false_alarm",
         }
         led.set_pattern(pattern_map.get(threat, "safe"))
 
@@ -145,8 +146,8 @@ def main():
         mqtt_client.publish_telemetry(telemetry)
         logger.info("Telemetry: %s", telemetry)
 
-        # Publish event on threat transition to Fire or Intruder
-        if threat != last_threat and threat in ("Fire", "Intruder"):
+        # Publish event on threat transition to Fire, Possible Fire, or Intruder
+        if threat != last_threat and threat in ("Fire", "Possible Fire", "Intruder"):
             event = {
                 "device_id": cfg["device_id"],
                 "timestamp": now,

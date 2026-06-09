@@ -11,6 +11,7 @@
   --safe: #22c55e;
   --intruder: #f59e0b;
   --fire: #ef4444;
+  --possible-fire: #f97316;
   --false-alarm: #a78bfa;
   --radius: 12px;
 }
@@ -93,7 +94,8 @@ main {
 .threat-safe      { background: rgba(34,197,94,.08);  border-color: rgba(34,197,94,.25); }
 .threat-intruder  { background: rgba(245,158,11,.1);  border-color: rgba(245,158,11,.35); }
 .threat-fire      { background: rgba(239,68,68,.1);   border-color: rgba(239,68,68,.35); }
-.threat-false-alarm { background: rgba(167,139,250,.1); border-color: rgba(167,139,250,.35); }
+.threat-possible-fire { background: rgba(249,115,22,.1);  border-color: rgba(249,115,22,.35); }
+.threat-false-alarm   { background: rgba(167,139,250,.1); border-color: rgba(167,139,250,.35); }
 
 .threat-icon {
   font-size: 2.2rem; width: 48px; height: 48px; display: flex;
@@ -103,7 +105,8 @@ main {
 .threat-safe      .threat-icon { background: rgba(34,197,94,.2);  color: var(--safe); }
 .threat-intruder  .threat-icon { background: rgba(245,158,11,.2); color: var(--intruder); }
 .threat-fire      .threat-icon { background: rgba(239,68,68,.2);  color: var(--fire); }
-.threat-false-alarm .threat-icon { background: rgba(167,139,250,.2); color: var(--false-alarm); }
+.threat-possible-fire .threat-icon { background: rgba(249,115,22,.2);  color: var(--possible-fire); }
+.threat-false-alarm   .threat-icon { background: rgba(167,139,250,.2); color: var(--false-alarm); }
 
 .threat-label { font-size: 1.4rem; font-weight: 700; }
 .threat-score { font-size: .85rem; color: var(--text-muted); margin-top: .15rem; }
@@ -151,7 +154,8 @@ main {
 .empty-row { text-align: center; color: var(--text-muted); padding: 1.5rem 0; }
 .event-fire        { color: var(--fire); font-weight: 700; }
 .event-intruder    { color: var(--intruder); font-weight: 700; }
-.event-false-alarm { color: var(--false-alarm); }
+.event-possible-fire { color: var(--possible-fire); font-weight: 700; }
+.event-false-alarm   { color: var(--false-alarm); }
 .event-safe        { color: var(--safe); }
 
 /* ── Buttons ──────────────────────────────────────────────── */

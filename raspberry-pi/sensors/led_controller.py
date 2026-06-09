@@ -12,10 +12,11 @@ LED_PORT = 5  # Digital D5
 # Pattern definitions: list of (on_seconds, off_seconds) tuples, repeated forever.
 # None means the LED stays off.
 PATTERNS = {
-    "safe": None,                          # off (heartbeat handled separately)
-    "intruder": [(1.0, 1.0)],             # slow blink
-    "fire": [(0.2, 0.2)],                 # fast blink
-    "false_alarm": [(0.1, 0.1, 0.1, 0.8)], # double-blink: on/off/on/pause
+    "safe":          None,                      # off (heartbeat handled separately)
+    "intruder":      [(1.0, 1.0)],             # slow 1 Hz blink
+    "fire":          [(0.2, 0.2)],             # fast 5 Hz blink
+    "possible_fire": [(0.4, 0.4)],             # medium blink — flame detected, unconfirmed
+    "false_alarm":   [(0.1, 0.1, 0.1, 0.8)],  # double-blink — environmental warning
 }
 
 

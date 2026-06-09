@@ -78,7 +78,7 @@ async def _handle_event(payload: dict):
         return
     async with AsyncSessionLocal() as db:
         event = await events_svc.save_event(db, data)
-        if data.event_type in ("Fire", "Intruder"):
+        if data.event_type in ("Fire", "Possible Fire", "Intruder"):
             await send_event_alerts(db, event)
 
 
