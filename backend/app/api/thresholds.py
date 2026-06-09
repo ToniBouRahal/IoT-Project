@@ -45,5 +45,5 @@ async def update_thresholds(
     await db.commit()
     await db.refresh(row)
 
-    publish_threshold_update(device_id, row.__dict__)
+    publish_threshold_update(device_id, ThresholdOut.model_validate(row).model_dump(exclude={"device_id"}))
     return row
