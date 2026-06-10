@@ -21,7 +21,7 @@ class Thresholds:
 class RiskEngine:
     def classify(
         self,
-        light: int,
+        _light: int,
         flame_detected: bool,
         temperature_c: float,
         humidity_percent: float,
@@ -53,12 +53,12 @@ class RiskEngine:
                 return ("Fire", round(min(score, 1.0), 3))
             return ("Possible Fire", round(thresholds.flame_fire_score, 3))
 
+        if motion_detected and armed:
+            return ("Intruder", 0.8)
+
         if env_confirmed:
             score = 0.3 if temp_extreme else 0.2 if temp_elevated else 0.0
             score += 0.15 if humidity_low else 0.0
             return ("False Alarm", round(score, 3))
-
-        if motion_detected and armed:
-            return ("Intruder", 0.8)
 
         return ("Safe", 0.0)
